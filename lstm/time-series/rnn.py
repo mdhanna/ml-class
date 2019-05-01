@@ -15,8 +15,8 @@ from plotutil import PlotCallback
 wandb.init()
 config = wandb.config
 
-config.repeated_predictions = False
-config.look_back = 4
+config.repeated_predictions = True
+config.look_back = 4 # to make more powerful, increase this value
 
 
 def load_data(data_type="airline"):
@@ -63,7 +63,7 @@ testX = testX[:, :, np.newaxis]
 
 # create and fit the RNN
 model = Sequential()
-model.add(SimpleRNN(10, input_shape=(config.look_back, 1)))
+model.add(SimpleRNN(10, input_shape=(config.look_back, 1))) # can also increase the 10 here, the "dimensionality" or number of hidden states
 model.add(Dense(1))
 model.compile(loss='mae', optimizer='rmsprop')
 model.fit(trainX, trainY, epochs=1000, batch_size=20, validation_data=(testX, testY),  callbacks=[

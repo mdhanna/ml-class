@@ -118,15 +118,15 @@ def prepare_sequences(notes, n_vocab):
 def create_network(network_input, n_vocab):
     """ create the structure of the neural network """
     model = Sequential()
-    model.add(GRU(
+    model.add(CuDNNGRU(
         256,
         input_shape=(network_input.shape[1], network_input.shape[2]),
         return_sequences=True
     ))
     model.add(Dropout(0.3))
-    model.add(GRU(128, return_sequences=True))
+    model.add(CuDNNGRU(128, return_sequences=True))
     model.add(Dropout(0.3))
-    model.add(GRU(64))
+    model.add(CuDNNGRU(64))
     model.add(Dense(256))
     model.add(Dropout(0.3))
     model.add(Dense(n_vocab))

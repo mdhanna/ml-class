@@ -1,8 +1,8 @@
 from keras.preprocessing import sequence
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation
+from keras.layers import Dense, Dropout, Activation, Bidirectional
 from keras.layers import Embedding
-from kears.layers import CuDNNLSTM as LSTM
+from keras.layers import CuDNNLSTM as LSTM
 from keras.layers import Conv1D, Flatten
 from keras.datasets import imdb
 import wandb
@@ -37,8 +37,9 @@ X_test = sequence.pad_sequences(X_test, maxlen=config.maxlen)
 model = Sequential()
 model.add(Embedding(config.vocab_size,
                     config.embedding_dims,
-                    input_length=config.maxlen))
-model.add(LSTM(50, activation="sigmoid"))
+                    input_length=config.maxlen)) # take words and turn into vectors of numbers (one-hot encode from a dictionary)
+model.add(Bidirectional(LSTM(50, return_sequences=True)))
+model.add(Bidirectional(LSTM(50)))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy',
               optimizer='rmsprop',

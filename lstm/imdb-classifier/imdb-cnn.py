@@ -1,6 +1,6 @@
 from keras.preprocessing import sequence
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation
+from keras.layers import Dense, Dropout, Activation, MaxPooling1D, GRU
 from keras.layers import Embedding, LSTM
 from keras.layers import Conv1D, Flatten
 from keras.datasets import imdb
@@ -41,14 +41,16 @@ model = Sequential()
 model.add(Embedding(config.vocab_size,
                     config.embedding_dims,
                     input_length=config.maxlen))
-model.add(Dropout(0.5))
 model.add(Conv1D(config.filters,
                  config.kernel_size,
                  padding='valid',
                  activation='relu'))
-model.add(Flatten())
-model.add(Dense(config.hidden_dims, activation='relu'))
-model.add(Dropout(0.5))
+model.add(MaxPooling1D())
+model.add(GRU(config.hidden_dims))
+# model.ad
+# model.add(Flatten())
+# model.add(Dense(config.hidden_dims, activation='relu'))
+# model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy',
