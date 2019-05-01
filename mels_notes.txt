@@ -1,0 +1,5 @@
+Recommended GRU over LSTM because faster to train and run
+Keras uses hard sigmoid by default
+use CuDNNGRU instead of GRU to import from Keras, way faster
+If feeding one LSTM to another, need to turn return_state to True so you can feed that state to the other
+Bidirectional can help with sentient analysis because end of sentence is also important (bidirectional concatenates the vector output from both directions and dense layer run on that concatentation)
